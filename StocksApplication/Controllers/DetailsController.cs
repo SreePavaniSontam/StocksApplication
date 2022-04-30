@@ -16,7 +16,7 @@ namespace StocksApplication.Controllers
 		public CompanyDetails tempDetails;
 		public string inputSymbol;
 		bool isSaved = false;
-		public string BASE_URL = "https://api.iextrading.com/1.0/";
+		public string BASE_URL = "https://cloud.iexapis.com/stable/";
 		HttpClient httpClient;
 
 		public DetailsController(IRepository repository)
@@ -57,7 +57,7 @@ namespace StocksApplication.Controllers
 		private CompanyDetails GetCompanyDetails(string symbol)
 		{
 			CompanyDetails cD = new CompanyDetails();
-			string CompanyDetails_End_Point = BASE_URL + "stock/" + symbol + "/company";
+			string CompanyDetails_End_Point = BASE_URL + "stock/" + symbol + "/company" + "?token=pk_fb8154e74d144e4c83b0bb8c5a5d294c";
 			string apiResponse = string.Empty;
 			httpClient.BaseAddress = new Uri(CompanyDetails_End_Point);
 			HttpResponseMessage response = httpClient.GetAsync(CompanyDetails_End_Point).GetAwaiter().GetResult();

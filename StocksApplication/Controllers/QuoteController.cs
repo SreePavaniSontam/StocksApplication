@@ -15,7 +15,7 @@ namespace StocksApplication.Views
 		public CompanyQuote detailsOfCompany;
 		public string inputSymbol;
 		bool isSaved = false;
-		public string BASE_URL = "https://api.iextrading.com/1.0/";
+		public string BASE_URL = "https://cloud.iexapis.com/stable/";
 		HttpClient httpClient;
 
 		public QuoteController(IRepository repository)
@@ -55,7 +55,7 @@ namespace StocksApplication.Views
 		private CompanyQuote GetCompanyQuote(string symbol)
 		{
 			CompanyQuote cQ = new CompanyQuote();
-			string CompanyQuote_End_Point = BASE_URL + "stock/" + symbol + "/quote";
+			string CompanyQuote_End_Point = BASE_URL + "stock/" + symbol + "/quote" + "?token=pk_fb8154e74d144e4c83b0bb8c5a5d294c";
 			string apiResponse = string.Empty;
 			httpClient.BaseAddress = new Uri(CompanyQuote_End_Point);
 			HttpResponseMessage response = httpClient.GetAsync(CompanyQuote_End_Point).GetAwaiter().GetResult();

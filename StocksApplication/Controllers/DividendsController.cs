@@ -15,7 +15,7 @@ namespace StocksApplication.Controllers
 		public List<CompanyDividend> detailsOfCompany;
 		public string inputSymbol;
 		bool isSaved = false;
-		public string BASE_URL = "https://api.iextrading.com/1.0/";
+		public string BASE_URL = "https://cloud.iexapis.com/stable/";
 		HttpClient httpClient;
 
 		public DividendsController(IRepository repository)
@@ -49,13 +49,14 @@ namespace StocksApplication.Controllers
 		private List<CompanyDividend> GetCompanyDividend(string symbol)
 		{
 			List<CompanyDividend> cDividends = new List<CompanyDividend>();
-			string CompanyDividends_End_Point = BASE_URL + "stock/" + symbol + "/dividends/2y";
+			string CompanyDividends_End_Point = BASE_URL + "stock/" + symbol + "/dividends/2y" + "?token=pk_fb8154e74d144e4c83b0bb8c5a5d294c";
 			string apiResponse = string.Empty;
 			httpClient.BaseAddress = new Uri(CompanyDividends_End_Point);
 			HttpResponseMessage response = httpClient.GetAsync(CompanyDividends_End_Point).GetAwaiter().GetResult();
 			if (response.IsSuccessStatusCode)
 			{
 				apiResponse = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+				apiResponse = apiResponse.Replace(",\"id\":\"DIVIDENDS\"", "");
 			}
 			if (!string.IsNullOrEmpty(apiResponse))
 			{
