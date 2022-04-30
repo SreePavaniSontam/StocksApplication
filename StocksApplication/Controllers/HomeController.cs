@@ -30,21 +30,33 @@ namespace StocksApplication.Controllers
 				System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 		}
 
-		public IActionResult Companies(string searchBy, string search)
+		public  async Task<IActionResult> Index(string searchBy, string search)
 		{
-			List<Company> allCompanies = GetAllCompanies();
-			bool areNewRcordsInserted = _repository.SaveCompanies(allCompanies);
+			return await GetHomeCompaniesOrIndex(searchBy, search);
+		}
+
+		public async Task<IActionResult> Companies(string searchBy, string search)
+		{
+			return await GetHomeCompaniesOrIndex(searchBy, search);
+		}
+
+		public async Task<IActionResult> GetHomeCompaniesOrIndex(string searchBy, string search)
+        {
+			List<Company> someCompanies = GetAllCompanies().Take(100).ToList();
+			bool areNewRcordsInserted = _repository.SaveCompanies(someCompanies);
+
+			someCompanies = await _repository.GetAllCompanies();
 			if (searchBy == null)
 			{
-				return View(allCompanies);
+				return View(someCompanies);
 			}
 			else if (searchBy.Equals("Symbol", StringComparison.OrdinalIgnoreCase))
 			{
-				return View(allCompanies.Where(x => x.Symbol.Equals(search, StringComparison.OrdinalIgnoreCase) || search == null).ToList());
+				return View(someCompanies.Where(x => x.Symbol.Equals(search, StringComparison.OrdinalIgnoreCase) || search == null).ToList());
 			}
 			else
 			{
-				return View(allCompanies.Where(x => x.Name.StartsWith(search, StringComparison.OrdinalIgnoreCase) || search == null).ToList());
+				return View(someCompanies.Where(x => x.Name.StartsWith(search, StringComparison.OrdinalIgnoreCase) || search == null).ToList());
 			}
 		}
 

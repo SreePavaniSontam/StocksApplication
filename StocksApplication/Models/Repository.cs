@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +15,12 @@ namespace StocksApplication.Models
 		public Repository(AppDbContext appDbContext)
 		{
 			_appDbContext = appDbContext;
+		}
+
+		public async Task<List<Company>> GetAllCompanies()
+        {
+			return await _appDbContext.Companies.ToListAsync();
+
 		}
 
 		public bool SaveCompanies(List<Company> companies)

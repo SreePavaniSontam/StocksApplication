@@ -7,6 +7,7 @@ namespace StocksApplication.Models
 {
 	public interface IRepository
 	{
+		Task<List<Company>> GetAllCompanies();
 		bool SaveCompanies(List<Company> companies);
 
 		void SaveCompanyQuote(CompanyQuote companyQuote);
